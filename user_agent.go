@@ -158,7 +158,7 @@ func (p *UserAgent) Parse(ua string) {
 			p.mozilla = sections[0].version
 		}
 
-		p.detectBrowser(sections)
+		p.detectBrowser1(sections)
 		p.detectOS(sections[0])
 		p.detectModel(sections[0])
 
