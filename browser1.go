@@ -48,7 +48,7 @@ func (p *UserAgent) detectBrowser1(sections []section) {
 	for _, key := range sortedKnownBrowser.Keys() {
 		s := getSectionByName(key.(string), sections)
 		if s != nil {
-			value, _ := sortedKnownEngine.Get(key)
+			value, _ := sortedKnownBrowser.Get(key)
 			p.browser.Name = value.(string)
 			p.browser.Version = s.version
 			break
