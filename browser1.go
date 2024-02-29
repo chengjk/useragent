@@ -1,49 +1,55 @@
 package useragent
 
-var sortedKnownBrowser = map[string]string{
-	"CriOS":           "Chrome",
-	"FxiOS":           "Firefox",
-	"GSA":             "Google App",
-	"Opera":           "Opera",
-	"OPR":             "Opera",
-	"Edge":            "Edge",
-	"Edg":             "Edge",
-	"EdgA":            "Edge",
-	"EdgiOS":          "Edge",
-	"YaBrowser":       "YaBrowser",
-	"coc_coc_browser": "Coc Coc",
-	"Electron":        "Electron",
-	"DuckDuckGo":      "DuckDuckGo",
-	"PhantomJS":       "PhantomJS",
-	"HeadlessChrome":  "Headless Chrome",
-	"Chromium":        "Chromium",
-	"Chrome":          "Chrome",
-	"Mobile":          "Mobile App",
-	"Safari":          "Safari",
-}
+import "github.com/emirpasic/gods/maps/linkedhashmap"
 
-var sortedKnownEngine = map[string]string{
-	"AppleWebKit": "AppleWebKit",
-	"Presto":      "Presto",
-	"Gecko":       "Gecko",
+var sortedKnownBrowser = linkedhashmap.New()
+var sortedKnownEngine = linkedhashmap.New()
+
+func init() {
+	sortedKnownBrowser.Put("CriOS", "Chrome")
+	sortedKnownBrowser.Put("FxiOS", "Firefox")
+	sortedKnownBrowser.Put("GSA", "Google App")
+	sortedKnownBrowser.Put("Opera", "Opera")
+	sortedKnownBrowser.Put("OPR", "Opera")
+	sortedKnownBrowser.Put("Edge", "Edge")
+	sortedKnownBrowser.Put("Edg", "Edge")
+	sortedKnownBrowser.Put("EdgA", "Edge")
+	sortedKnownBrowser.Put("EdgiOS", "Edge")
+	sortedKnownBrowser.Put("YaBrowser", "YaBrowser")
+	sortedKnownBrowser.Put("coc_coc_browser", "Coc Coc")
+	sortedKnownBrowser.Put("Electron", "Electron")
+	sortedKnownBrowser.Put("DuckDuckGo", "DuckDuckGo")
+	sortedKnownBrowser.Put("PhantomJS", "PhantomJS")
+	sortedKnownBrowser.Put("HeadlessChrome", "Headless Chrome")
+	sortedKnownBrowser.Put("Chromium", "Chromium")
+	sortedKnownBrowser.Put("Chrome", "Chrome")
+	sortedKnownBrowser.Put("Mobile", "Mobile App")
+	sortedKnownBrowser.Put("Safari", "Safari")
+
+	sortedKnownEngine.Put("AppleWebKit", "AppleWebKit")
+	sortedKnownEngine.Put("Presto", "Presto")
+	sortedKnownEngine.Put("Gecko", "Gecko")
+
 }
 
 func (p *UserAgent) detectBrowser1(sections []section) {
 
 	//parse engine
-	for k, v := range sortedKnownEngine {
-		s := getSectionByName(k, sections)
+	for _, key := range sortedKnownEngine.Keys() {
+		s := getSectionByName(key.(string), sections)
 		if s != nil {
-			p.browser.Engine = v
+			value, _ := sortedKnownEngine.Get(key)
+			p.browser.Engine = value.(string)
 			p.browser.EngineVersion = s.version
 			break
 		}
 	}
 
-	for k, v := range sortedKnownBrowser {
-		s := getSectionByName(k, sections)
+	for _, key := range sortedKnownBrowser.Keys() {
+		s := getSectionByName(key.(string), sections)
 		if s != nil {
-			p.browser.Name = v
+			value, _ := sortedKnownEngine.Get(key)
+			p.browser.Name = value.(string)
 			p.browser.Version = s.version
 			break
 		}
