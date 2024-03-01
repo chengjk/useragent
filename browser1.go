@@ -11,7 +11,6 @@ func init() {
 	sortedKnownBrowser.Put("GSA", "Google App")
 	sortedKnownBrowser.Put("Opera", "Opera")
 	sortedKnownBrowser.Put("OPR", "Opera")
-	sortedKnownBrowser.Put("Edge", "Edge")
 	sortedKnownBrowser.Put("Edg", "Edge")
 	sortedKnownBrowser.Put("EdgA", "Edge")
 	sortedKnownBrowser.Put("EdgiOS", "Edge")
@@ -23,8 +22,6 @@ func init() {
 	sortedKnownBrowser.Put("HeadlessChrome", "Headless Chrome")
 	sortedKnownBrowser.Put("Chromium", "Chromium")
 	sortedKnownBrowser.Put("Chrome", "Chrome")
-	sortedKnownBrowser.Put("Mobile", "Mobile App")
-	sortedKnownBrowser.Put("Safari", "Safari")
 
 	sortedKnownEngine.Put("AppleWebKit", "AppleWebKit")
 	sortedKnownEngine.Put("Presto", "Presto")
@@ -52,6 +49,13 @@ func (p *UserAgent) detectBrowser1(sections []section) {
 			p.browser.Name = value.(string)
 			p.browser.Version = s.version
 			break
+		}
+	}
+	if p.browser.Name == "" {
+		p.browser.Name = "Safari"
+		verSec := getSectionByName("Version", sections)
+		if verSec != nil {
+			p.browser.Version = verSec.version
 		}
 	}
 
